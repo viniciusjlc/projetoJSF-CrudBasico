@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"/>
+    <f:metadata>
+        <f:viewAction action="#{sessaoMB.controlarSessao}"/>
+        <f:viewAction action="#{usuarioMB.iniciarListaUsuarios}"/>
+    </f:metadata>
+    <title>Principal</title>
+</h:head>
+<h:body>
+    <h:form id="formPrincipal">
+        <p:commandButton value="Adicionar Usuario" action="#{usuarioMB.redirecionarCadastrar()}"/>
+        <p:commandButton value="TESTE" action="#{usuarioMB.teste()}"/>
+
+        <p:dataTable id="tabela" value="#{usuarioMB.listaComUsuarios}"
+                     paginator="true" var="usuarioTab"
+                     paginatorPosition="bottom" rows="5"
+                     emptyMessage="Nenhum dado encontrado.">
+            <p:column headerText="Nome">
+                <p:outputLabel value="#{usuarioTab.nome}"/>
+            </p:column>
+            <p:column headerText="Email">
+                <p:outputLabel value="#{usuarioTab.email}"/>
+            </p:column>
+            <p:column headerText="Celular">
+                <p:outputLabel value="#{usuarioMB.telefoneMascara(usuarioTab.celular)}"/>
+            </p:column>
+            <p:column headerText="CPF">
+                <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioTab.cpf)}"/>
+            </p:column>
+            <p:column headerText="Ações">
+                <p:commandButton value="Alterar" action="#{usuarioMB.teste()}" immediate="true" process="@this">
+                    <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
+                </p:commandButton>
+                <p:commandButton value="TESTE" action="#{usuarioMB.teste()}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+
+<p:dialog dynamic="true" widgetVar="dlgTeste"
+          header="Teste" width="auto" height="auto"
+          closable="true" resizable="false" modal="true">
+    <h:form id="formTeste">
+        <p:panel id="pnlTeste">
+            <p:commandButton value="TESTE" action="#{usuarioMB.teste()}"/>
+            <p:outputLabel value="TESTE#{usuarioMB.usuario.email}"/>
+        </p:panel>
+    </h:form>
+</p:dialog>
+</html>
