@@ -1,5 +1,8 @@
 package br.com.algaworks.util;
 
+import java.text.Normalizer;
+import java.util.regex.Pattern;
+
 public class StringUtil extends org.apache.commons.lang3.StringUtils{
     public static String putMask(String valorSemMascara, String mask) {
         StringBuilder valorComMascara = new StringBuilder();
@@ -17,5 +20,11 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils{
 
     public static String retirarMascara(String valorComMascara) {
         return valorComMascara.replaceAll("\\D*", "");
+    }
+
+    public static String retirarAcento(String str){
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 }

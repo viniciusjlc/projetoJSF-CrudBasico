@@ -14,8 +14,6 @@
 <h:body>
     <h:form id="formPrincipal">
         <p:commandButton value="Adicionar Usuario" action="#{usuarioMB.redirecionarCadastrar()}"/>
-        <p:commandButton value="TESTE" action="#{usuarioMB.teste()}"/>
-
         <p:dataTable id="tabela" value="#{usuarioMB.listaComUsuarios}"
                      paginator="true" var="usuarioTab"
                      paginatorPosition="bottom" rows="5"
@@ -33,22 +31,32 @@
                 <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioTab.cpf)}"/>
             </p:column>
             <p:column headerText="Ações">
-                <p:commandButton value="Alterar" action="#{usuarioMB.teste()}" immediate="true" process="@this">
+                <p:commandButton value="Alterar" action="#{usuarioMB.redirecionarAtualizar}" immediate="true">
                     <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
                 </p:commandButton>
-                <p:commandButton value="TESTE" action="#{usuarioMB.teste()}"/>
+                <p:commandButton value="Excluir" onclick="PF('dlgExcluirUsuario').show();" immediate="true">
+                    <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
+                </p:commandButton>
             </p:column>
         </p:dataTable>
     </h:form>
 </h:body>
 
-<p:dialog dynamic="true" widgetVar="dlgTeste"
+<p:dialog dynamic="true" widgetVar="dlgExcluirUsuario"
           header="Teste" width="auto" height="auto"
           closable="true" resizable="false" modal="true">
-    <h:form id="formTeste">
-        <p:panel id="pnlTeste">
-            <p:commandButton value="TESTE" action="#{usuarioMB.teste()}"/>
-            <p:outputLabel value="TESTE#{usuarioMB.usuario.email}"/>
+    <h:form id="formExcluirUsuario">
+        <p:panel id="pnlExcluirUsuario">
+            <p:panelGrid columns="1">
+                <p:row>
+                    <p:outputLabel value="Deseja excluir o usuario: #{usuarioMB.usuario.nome} ?"/>
+                </p:row>
+                <p:row>
+                    <p:commandButton action="#{usuarioMB.excluirUsuario()}" oncomplete="PF('dlgExcluirUsuario').hide();"
+                                     update=":formPrincipal" value="Sim"/>
+                    <p:commandButton oncomplete="PF('dlgExcluirUsuario').hide();" value="Não"/>
+                </p:row>
+            </p:panelGrid>
         </p:panel>
     </h:form>
 </p:dialog>

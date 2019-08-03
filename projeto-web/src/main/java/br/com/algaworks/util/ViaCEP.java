@@ -36,36 +36,20 @@ public class ViaCEP extends ViaCEPBase {
         this.Events = events;
     }
 
-    /**
-     * Constr&oacute;i uma nova classe e busca um CEP no ViaCEP
-     *
-     * @param events eventos para a classe
-     * @param cep
-     * @throws br.com.parg.viacep.ViaCEPException caso ocorra algum erro
-     */
+
     public ViaCEP(String cep, ViaCEPEvents events) throws ViaCEPException {
         super();
         this.Events = events;
         this.buscar(cep);
     }
 
-    /**
-     * Constrói uma nova classe e busca um CEP no ViaCEP
-     *
-     * @param cep
-     * @throws br.com.parg.viacep.ViaCEPException caso ocorra algum erro
-     */
+
     public ViaCEP(String cep) throws ViaCEPException {
         super();
         this.buscar(cep);
     }
 
-    /**
-     * Busca um CEP no ViaCEP
-     *
-     * @param cep
-     * @throws br.com.parg.viacep.ViaCEPException caso ocorra algum erro
-     */
+
     @Override
     public final void buscar(String cep) throws ViaCEPException {
         // define o cep atual
@@ -82,7 +66,7 @@ public class ViaCEP extends ViaCEPBase {
                     obj.getString("logradouro"),
                     obj.getString("complemento"),
                     obj.getString("bairro"),
-                    obj.getString("localidade"),
+                    StringUtil.retirarAcento(obj.getString("localidade")),
                     obj.getString("uf"),
                     obj.getString("ibge"),
                     obj.getString("gia"));

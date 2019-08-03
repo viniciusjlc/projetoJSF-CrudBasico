@@ -7,8 +7,8 @@ import br.com.algaworks.dao.UsuarioDAO;
 import br.com.algaworks.util.*;
 
 import static br.com.algaworks.shared.Constantes.*;
-
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+@ViewScoped
 @ManagedBean(name = "usuarioMB")
 public class UsuarioController implements Serializable {
     private ArrayList<Usuario> listaComUsuarios;
@@ -38,8 +39,8 @@ public class UsuarioController implements Serializable {
         listaComUsuarios = userDAO.retornarListaComUsuarios();
     }
 
-    public void redirecionarAtualizar(Usuario userUpdate) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user_update", userUpdate);
+    public void redirecionarAtualizar() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user_update", usuario);
         PagesUtil.redirectPage("cadastrarusuario");
     }
 
@@ -85,7 +86,7 @@ public class UsuarioController implements Serializable {
         if(retornarCondicaoTelaCadastarAtualizar().equals(CONDICAO_CADASTRAR)){
             validarUsuarioCadastrado();
         }else{
-
+            alterarUsuario();
         }
     }
 
@@ -101,8 +102,29 @@ public class UsuarioController implements Serializable {
         if(userDAO.gravarUsuario(usuario)){
             PagesUtil.redirectPage("principal");
             MensagemUtil.sucesso("Usuario cadastrado com sucesso");
+            usuario = new Usuario();
         }else{
             MensagemUtil.erro("Erro ao cadastrar Usuario");
+        }
+    }
+
+    private void alterarUsuario() throws IOException {
+        if(userDAO.alterarUsuario(usuario, emailAlteracao)){
+            PagesUtil.redirectPage("principal");
+            MensagemUtil.sucesso("Usuario alterado com sucesso");
+            usuario = new Usuario();
+        }else{
+            MensagemUtil.erro("Erro ao alterar Usuario");
+        }
+    }
+
+    public void excluirUsuario() throws IOException {
+        if(userDAO.deletarUsuario(usuario.getEmail())){
+            MensagemUtil.sucesso("Usuario excluido com sucesso");
+            usuario = new Usuario();
+            PagesUtil.atualizarComponente(":formPrincipal");
+        }else{
+            MensagemUtil.erro("Erro ao excluir Usuario");
         }
     }
 

@@ -5,6 +5,7 @@ import br.com.algaworks.model.Usuario;
 import br.com.algaworks.factory.ConnectionFactory;
 import br.com.algaworks.util.StringUtil;
 import br.com.algaworks.util.VerificadorUtil;
+import static  br.com.algaworks.shared.Queries.QueriesUsuario.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,10 +17,7 @@ public class UsuarioDAO {
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
         conexao = ConnectionFactory.getConnection();
         try {
-            String sql = "SELECT nome, data_nascimento, cpf, email, senha, celular, genero, rg_numero, rg_uf, " +
-                    "rg_data_emissao, cep, cidade, estado, bairro, numero, logradouro, complemento, foto, administrador " +
-                    "FROM public.usuarios where ativo = true";
-            PreparedStatement ps = conexao.prepareStatement(sql);
+            PreparedStatement ps = conexao.prepareStatement(QUERY_CONSULTAR_RETORNAR_LISTA_COM_USUARIOS);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Usuario user = new Usuario();
@@ -60,8 +58,7 @@ public class UsuarioDAO {
         ArrayList<Estado> listaEstados = new ArrayList<>();
         conexao = ConnectionFactory.getConnection();
         try {
-            String sql = "SELECT nome, uf as sigla FROM public.estados order by nome;";
-            PreparedStatement ps = conexao.prepareStatement(sql);
+            PreparedStatement ps = conexao.prepareStatement(QUERY_CONSULTAR_RETORNAR_LISTA_COM_ESTADOS);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Estado estado = new Estado();
@@ -84,9 +81,8 @@ public class UsuarioDAO {
     public Boolean verificarEmail(Usuario u) {
         boolean retorno = false;
         conexao = ConnectionFactory.getConnection();
-        String sql = "select * from public.usuarios u where u.email like ?";
         try {
-            PreparedStatement ps = conexao.prepareStatement(sql);
+            PreparedStatement ps = conexao.prepareStatement(QUERY_CONSULTAR_VERIFICAR_EMAIL);
             ps.setString(1, u.getEmail());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -109,13 +105,54 @@ public class UsuarioDAO {
         boolean salvou = false;
         conexao = ConnectionFactory.getConnection();
         PreparedStatement ps;
-        String sql = "INSERT INTO public.usuarios " +
-                "(nome, data_nascimento, cpf, email, senha, celular, genero, rg_numero, rg_uf, rg_data_emissao, " +
-                "cep, cidade, estado, bairro, numero, logradouro, complemento) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            ps = conexao.prepareStatement(sql);
+            ps = conexao.prepareStatement(QUERY_INSERIR_GRAVAR_USUARIO);
             mapearPrepareStatementGravacao(usuario, ps);
+            ps.executeUpdate();
+            salvou = true;
+            conexao.commit();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return salvou;
+    }
+
+    public boolean alterarUsuario(Usuario usuario, String emailAntigo) {
+        boolean salvou = false;
+        conexao = ConnectionFactory.getConnection();
+        PreparedStatement ps;
+        try {
+            ps = conexao.prepareStatement(QUERY_ALTERAR_USUARIO);
+            mapearPrepareStatementGravacao(usuario, ps);
+            ps.setString(18, emailAntigo);
+            ps.executeUpdate();
+            salvou = true;
+            conexao.commit();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return salvou;
+    }
+
+    public boolean deletarUsuario(String email) {
+        boolean salvou = false;
+        conexao = ConnectionFactory.getConnection();
+        PreparedStatement ps;
+        try {
+            ps = conexao.prepareStatement(QUERY_EXCLUIR_DELETAR_USUARIO);
+            ps.setString(1, email);
             ps.executeUpdate();
             salvou = true;
             conexao.commit();
@@ -142,7 +179,7 @@ public class UsuarioDAO {
         } else {
             ps.setNull(2, java.sql.Types.NULL);
         }
-        if (VerificadorUtil.naoEstaNuloOuVazio(StringUtil.retirarMascara(usuario.getCpf()))) {
+        if (VerificadorUtil.naoEstaNuloOuVazio(usuario.getCpf())) {
             ps.setString(3, StringUtil.retirarMascara(usuario.getCpf()));
         } else {
             ps.setNull(3, java.sql.Types.NULL);
@@ -157,7 +194,7 @@ public class UsuarioDAO {
         } else {
             ps.setNull(5, java.sql.Types.NULL);
         }
-        if (VerificadorUtil.naoEstaNuloOuVazio(StringUtil.retirarMascara(usuario.getCelular()))) {
+        if (VerificadorUtil.naoEstaNuloOuVazio(usuario.getCelular())) {
             ps.setString(6, StringUtil.retirarMascara(usuario.getCelular()));
         } else {
             ps.setNull(6, java.sql.Types.NULL);
@@ -183,7 +220,7 @@ public class UsuarioDAO {
             ps.setNull(10, java.sql.Types.NULL);
         }
         if (VerificadorUtil.naoEstaNuloOuVazio(usuario.getEndereco().getCep())) {
-            ps.setString(11, usuario.getEndereco().getCep());
+            ps.setString(11, StringUtil.retirarMascara(usuario.getEndereco().getCep()));
         } else {
             ps.setNull(11, java.sql.Types.NULL);
         }

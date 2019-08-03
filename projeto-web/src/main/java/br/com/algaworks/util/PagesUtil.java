@@ -1,5 +1,7 @@
 package br.com.algaworks.util;
 
+import org.primefaces.context.RequestContext;
+
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
@@ -14,5 +16,9 @@ public class PagesUtil {
         FacesContext context  = FacesContext.getCurrentInstance();
         String url = context.getExternalContext().getRequestContextPath();
         context.getExternalContext().redirect(url+"/login.xhtml");
+    }
+
+    public static void atualizarComponente(String componente) {
+        RequestContext.getCurrentInstance().update(componente);
     }
 }
