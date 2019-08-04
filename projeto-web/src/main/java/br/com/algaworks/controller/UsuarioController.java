@@ -156,9 +156,12 @@ public class UsuarioController implements Serializable {
         }else if(!senhaNova.equals(senhaConfirmar)){
             MensagemUtil.alerta("Senha nova e confirmação não conferem!");
         }else{
-            userDAO.alterarSenha(senhaNova, emailAlteracao);
-            PagesUtil.fecharDialog("dlgAlterarSenha");
-            MensagemUtil.sucesso("Senha alterada com sucesso");
+            if(userDAO.alterarSenha(senhaNova, emailAlteracao)){
+                PagesUtil.fecharDialog("dlgAlterarSenha");
+                MensagemUtil.sucesso("Senha alterada com sucesso");
+            }else{
+                MensagemUtil.erro("Erro ao alterar senha");
+            }
         }
     }
 

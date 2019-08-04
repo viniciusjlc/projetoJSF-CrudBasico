@@ -10,7 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.faces.bean.ViewScoped;
 
+@ViewScoped
 @ManagedBean (name = "sessaoMB")
 public class SessaoController implements Serializable {
     private Usuario usuarioAcesso;
@@ -26,7 +28,7 @@ public class SessaoController implements Serializable {
             MensagemUtil.erro("Senha e/ou Email não preenchidos!");
         }else if (sessionDAO.verificaSenha(usuarioAcesso)) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user_session", usuarioAcesso);
-            PagesUtil.redirectPage("principal");
+            redirecionarPrincipal();
         } else {
             MensagemUtil.erro("Senha e Email Incorretos!");
         }
@@ -40,6 +42,10 @@ public class SessaoController implements Serializable {
 
     public void redirecionarLogin() throws IOException {
         PagesUtil.redirectPage("login");
+    }
+
+    public void redirecionarPrincipal() throws IOException {
+        PagesUtil.redirectPage("principal");
     }
 
     public Usuario getUsuarioAcesso() {

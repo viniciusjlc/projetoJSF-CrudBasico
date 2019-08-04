@@ -166,6 +166,8 @@
                              action="#{usuarioMB.validarCondicaoGravacao()}" styleClass="campos-lab"/>
             <p:commandButton value="Alterar Senha" rendered="#{usuarioMB.userUpdate}" styleClass="campos-lab"
                              onclick="PF('dlgAlterarSenha').show();"/>
+            <p:commandButton action="#{sessaoMB.redirecionarPrincipal()}"
+                             value="Retornar para tela principal" immediate="true"/>
         </h:form>
     </div>
 </h:body>
