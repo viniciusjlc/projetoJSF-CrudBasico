@@ -25,7 +25,7 @@ public class ViaCEP extends ViaCEPBase {
     }
 
     final Boolean validarCEP(String cep) throws ViaCEPException {
-        Boolean retorno = false;
+        boolean retorno = false;
         currentCEP = cep;
         String url = "http://viacep.com.br/ws/" + cep + "/json/";
         JSONObject obj = new JSONObject(getHttpGET(url));

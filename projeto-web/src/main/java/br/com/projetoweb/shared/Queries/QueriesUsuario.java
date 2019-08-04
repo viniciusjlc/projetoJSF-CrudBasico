@@ -27,10 +27,9 @@ public class QueriesUsuario {
                     "WHERE email like ?";
 
     public static final String QUERY_ALTERAR_DELETAR_USUARIO =
-            "UPDATE public.usuarios SET ativo=false WHERE email like ?";
-
+            "UPDATE public.usuarios SET ativo=false, data_hora_ultima_modificacao=CURRENT_TIMESTAMP WHERE email like ?";
 
     public static final String QUERY_ALTERAR_SENHA =
-            "UPDATE public.usuarios SET senha=? WHERE email like ?";
+            "UPDATE public.usuarios SET senha=?, data_hora_ultima_modificacao=CURRENT_TIMESTAMP WHERE email like ?";
 
 }
