@@ -24,6 +24,17 @@ public class ViaCEP extends ViaCEPBase {
         }
     }
 
+    final Boolean validarCEP(String cep) throws ViaCEPException {
+        Boolean retorno = false;
+        currentCEP = cep;
+        String url = "http://viacep.com.br/ws/" + cep + "/json/";
+        JSONObject obj = new JSONObject(getHttpGET(url));
+        if (!obj.has("erro")) {
+            retorno = true;
+        }
+        return retorno;
+    }
+
     private void mapeamentoCEP(JSONObject obj) {
         CEP novoCEP = new CEP(obj.getString("cep"),
                 obj.getString("logradouro"),

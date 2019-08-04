@@ -120,7 +120,7 @@
                             mask="99999-999" maxlength="9"
                             value="#{usuarioMB.usuario.endereco.cep}">
                         <p:ajax listener="#{usuarioMB.buscarCep()}"
-                                update=":formDados:out-endereco1, :formDados:out-endereco2"/>
+                                update=":formDados:out-endereco1, :formDados:out-endereco2, :formDados:msg"/>
                     </p:inputMask>
                 </p:row>
                 <p:row>
