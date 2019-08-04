@@ -7,6 +7,7 @@
     <meta charset="UTF-8"/>
 
     <f:metadata>
+        <f:viewAction action="#{sessaoMB.controlarSessao}"/>
         <f:viewAction action="#{usuarioMB.definirCadastrarAtualizar()}"/>
     </f:metadata>
     <h:outputStylesheet library="css" name="geral.css"/>
@@ -61,6 +62,21 @@
                             mask="99999-9999" maxlength="10"
                             value="#{usuarioMB.usuario.celular}">
                     </p:inputMask>
+                </p:row>
+                <p:row rendered="#{!usuarioMB.userUpdate}">
+                    <p:outputLabel value="Senha:" styleClass="campos-lab">
+                        <span style="color: red;">* </span>
+                    </p:outputLabel>
+                    <p:inputText required="true" requiredMessage="Senha é obrigatoria"
+                                 value="#{usuarioMB.usuario.senha}" type="password"
+                                 maxlength="60"/>
+
+                    <p:outputLabel value="Confirmar Senha:" styleClass="campos-lab">
+                        <span style="color: red;">*</span>
+                    </p:outputLabel>
+                    <p:inputText required="true" requiredMessage="Confirmar senha é obrigatorio"
+                                 value="#{usuarioMB.senhaConfirmar}" type="password"
+                                 maxlength="60"/>
                 </p:row>
                 <p:row>
                     <p:outputLabel value="CPF:" styleClass="campos-lab"/>
@@ -148,7 +164,48 @@
             </p:panelGrid>
             <p:commandButton value="#{usuarioMB.condicaoTelaCadastarAtualizar}" update=":formDados:msg"
                              action="#{usuarioMB.validarCondicaoGravacao()}" styleClass="campos-lab"/>
+            <p:commandButton value="Alterar Senha" rendered="#{usuarioMB.userUpdate}" styleClass="campos-lab"
+                             onclick="PF('dlgAlterarSenha').show();"/>
         </h:form>
     </div>
 </h:body>
+<p:dialog dynamic="true" widgetVar="dlgAlterarSenha"
+          header="Cadastrar Usuario" width="auto" height="auto"
+          closable="true" resizable="false" modal="true">
+    <h:form id="formAlterarSenha">
+        <p:growl id="msgAlterarSenha" showDetail="true"/>
+        <p:panel id="pnlAlterarSenha">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Senha Atual:" styleClass="campos-lab">
+                    <span style="color: red;">* </span>
+                </p:outputLabel>
+                <p:inputText required="true" requiredMessage="Senha é obrigatoria"
+                             value="#{usuarioMB.senhaAntiga}" type="password"
+                             maxlength="60">
+                    <p:ajax update=":formAlterarSenha:msgAlterarSenha"/>
+                </p:inputText>
+
+                <p:outputLabel value="Nova Senha:" styleClass="campos-lab">
+                    <span style="color: red;">* </span>
+                </p:outputLabel>
+                <p:inputText required="true" requiredMessage="Senha é obrigatoria"
+                             value="#{usuarioMB.senhaNova}" type="password"
+                             maxlength="60">
+                    <p:ajax update=":formAlterarSenha:msgAlterarSenha"/>
+                </p:inputText>
+
+                <p:outputLabel value="Confirmar Senha:" styleClass="campos-lab">
+                    <span style="color: red;">*</span>
+                </p:outputLabel>
+                <p:inputText required="true" requiredMessage="Confirmar senha é obrigatorio"
+                             value="#{usuarioMB.senhaConfirmar}" type="password"
+                             maxlength="60">
+                    <p:ajax update=":formAlterarSenha:msgAlterarSenha"/>
+                </p:inputText>
+            </p:panelGrid>
+            <p:commandButton actionListener="#{usuarioMB.alterarSenha()}" update=":formAlterarSenha:msgAlterarSenha"
+                             value="Alterar senha"/>
+        </p:panel>
+    </h:form>
+</p:dialog>
 </html>

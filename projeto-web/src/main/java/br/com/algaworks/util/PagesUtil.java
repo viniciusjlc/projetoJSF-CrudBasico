@@ -12,13 +12,11 @@ public class PagesUtil {
         context.getExternalContext().redirect(url+"/pages/"+page+".xhtml");
     }
 
-    public static void redirectPageLogin() throws IOException {
-        FacesContext context  = FacesContext.getCurrentInstance();
-        String url = context.getExternalContext().getRequestContextPath();
-        context.getExternalContext().redirect(url+"/login.xhtml");
+    public static void fecharDialog(String dialog) {
+        getRequestContext().execute("PF('" + dialog + "').hide();");
     }
 
-    public static void atualizarComponente(String componente) {
-        RequestContext.getCurrentInstance().update(componente);
+    private static RequestContext getRequestContext() {
+        return RequestContext.getCurrentInstance();
     }
 }

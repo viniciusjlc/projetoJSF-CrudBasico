@@ -34,8 +34,12 @@ public class SessaoController implements Serializable {
 
     public void controlarSessao() throws IOException {
         if(VerificadorUtil.estaNulo(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_session"))){
-            PagesUtil.redirectPageLogin();
+            PagesUtil.redirectPage("login");
         }
+    }
+
+    public void redirecionarLogin() throws IOException {
+        PagesUtil.redirectPage("login");
     }
 
     public Usuario getUsuarioAcesso() {

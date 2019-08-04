@@ -5,7 +5,7 @@ public class QueriesUsuario {
     public static final String QUERY_CONSULTAR_RETORNAR_LISTA_COM_USUARIOS =
             "SELECT nome, data_nascimento, cpf, email, senha, celular, genero, rg_numero, rg_uf, " +
             "rg_data_emissao, cep, cidade, estado, bairro, numero, logradouro, complemento, foto, administrador " +
-            "FROM public.usuarios where ativo = true";
+            "FROM public.usuarios where ativo = true ORDER BY id";
 
     public static final String QUERY_CONSULTAR_RETORNAR_LISTA_COM_ESTADOS =
             "SELECT nome, uf as sigla FROM public.estados order by nome";
@@ -28,4 +28,9 @@ public class QueriesUsuario {
 
     public static final String QUERY_ALTERAR_DELETAR_USUARIO =
             "UPDATE public.usuarios SET ativo=false WHERE email like ?";
+
+
+    public static final String QUERY_ALTERAR_SENHA =
+            "UPDATE public.usuarios SET senha=? WHERE email like ?";
+
 }

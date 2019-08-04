@@ -5,5 +5,5 @@ public class Constantes {
     public static final String CPE_MASCARA = "#####-###";
     public static final String TELEFONE_MASCARA = "#####-####";
     public static final String CONDICAO_CADASTRAR = "Cadastrar";
-    public static final String CONDICAO_ATUALIZAR = "Atualizar";
+    public static final String CONDICAO_ATUALIZAR = "Alterar";
 }

@@ -32,14 +32,14 @@
                 <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioTab.cpf)}"/>
             </p:column>
             <p:column headerText="Ações" style="width: 30%">
-                <p:commandButton value="Alterar" action="#{usuarioMB.redirecionarAtualizar}" immediate="true">
+                <p:commandButton value="Alterar" action="#{usuarioMB.redirecionarAtualizar}" immediate="true" style="width: 30%">
                     <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
                 </p:commandButton>
-                <p:commandButton value="Excluir" onclick="PF('dlgExcluirUsuario').show();" immediate="true"
+                <p:commandButton value="Excluir" onclick="PF('dlgExcluirUsuario').show();" immediate="true" style="width: 30%"
                                  update=":formExcluirUsuario">
                     <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
                 </p:commandButton>
-                <p:commandButton value="Visualizar" onclick="PF('dlgVisualizarUsuario').show();" immediate="true"
+                <p:commandButton value="Visualizar" onclick="PF('dlgVisualizarUsuario').show();" immediate="true" style="width: 30%"
                                  update=":formVisualizarUsuario">
                     <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
                 </p:commandButton>

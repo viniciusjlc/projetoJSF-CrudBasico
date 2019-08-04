@@ -146,6 +146,29 @@ public class UsuarioDAO {
         return salvou;
     }
 
+    public boolean alterarSenha(String senhaNova, String emailAntigo) {
+        boolean salvou = false;
+        conexao = ConnectionFactory.getConnection();
+        PreparedStatement ps;
+        try {
+            ps = conexao.prepareStatement(QUERY_ALTERAR_SENHA);
+            ps.setString(1, senhaNova);
+            ps.setString(2, emailAntigo);
+            ps.executeUpdate();
+            salvou = true;
+            conexao.commit();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return salvou;
+    }
+
     public boolean deletarUsuario(String email) {
         boolean salvou = false;
         conexao = ConnectionFactory.getConnection();

@@ -7,6 +7,7 @@ import br.com.algaworks.dao.UsuarioDAO;
 import br.com.algaworks.util.*;
 
 import static br.com.algaworks.shared.Constantes.*;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -28,11 +29,17 @@ public class UsuarioController implements Serializable {
     private List<Estado> listaComEstados;
     private Boolean renderizarCamposRG;
     private String emailAlteracao;
+    private String senhaConfirmar;
+    private String senhaAntiga;
+    private String senhaNova;
 
     public UsuarioController() {
         userDAO = new UsuarioDAO();
         renderizarCamposRG = false;
         usuario = new Usuario();
+        senhaConfirmar = null;
+        senhaAntiga = null;
+        senhaNova = null;
     }
 
     public void iniciarDadosPaginaPrincipal() {
@@ -49,24 +56,28 @@ public class UsuarioController implements Serializable {
         PagesUtil.redirectPage("cadastrarusuario");
     }
 
-    public void definirCadastrarAtualizar(){
-        if(VerificadorUtil.naoEstaNulo(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_update"))){
+    public void definirCadastrarAtualizar() {
+        if (isUserUpdate()) {
             usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_update");
             emailAlteracao = usuario.getEmail();
             condicaoTelaCadastarAtualizar = CONDICAO_ATUALIZAR;
             checarCamposRG();
-        }else{
-            condicaoTelaCadastarAtualizar= CONDICAO_CADASTRAR;
+        } else {
+            condicaoTelaCadastarAtualizar = CONDICAO_CADASTRAR;
         }
         iniciarListas();
     }
 
-    private String retornarCondicaoTelaCadastarAtualizar(){
-        if(VerificadorUtil.naoEstaNulo(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_update"))){
+    private String retornarCondicaoTelaCadastarAtualizar() {
+        if (isUserUpdate()) {
             return CONDICAO_ATUALIZAR;
-        }else{
+        } else {
             return CONDICAO_CADASTRAR;
         }
+    }
+
+    public boolean isUserUpdate() {
+        return VerificadorUtil.naoEstaNulo(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_update"));
     }
 
     public void checarCamposRG() {
@@ -74,62 +85,80 @@ public class UsuarioController implements Serializable {
         iniciarListas();
     }
 
-    private void iniciarListas(){
+    private void iniciarListas() {
         listaComModelosDeGeneros = Arrays.asList(ModeloGenero.values());
         listaComEstados = userDAO.retornarListaComEstados();
     }
 
     public void validarCondicaoGravacao() throws IOException {
-        if(retornarCondicaoTelaCadastarAtualizar().equals(CONDICAO_CADASTRAR)){
+        if (retornarCondicaoTelaCadastarAtualizar().equals(CONDICAO_CADASTRAR)) {
             validarUsuarioCadastrado();
-        }else{
+        } else {
             alterarUsuario();
         }
     }
 
-    public String retornarGenero(String sigla){
-        if(VerificadorUtil.naoEstaNuloOuVazio(sigla)){
+    public String retornarGenero(String sigla) {
+        if (VerificadorUtil.naoEstaNuloOuVazio(sigla)) {
             return (sigla.equals(ModeloGenero.Masculino.getSigla())) ? ModeloGenero.Masculino.name() : ModeloGenero.Feminino.name();
-        }else{
+        } else {
             return null;
         }
     }
 
-    private void validarUsuarioCadastrado() throws IOException {
+    public void validarUsuarioCadastrado() throws IOException {
         if (userDAO.verificarEmail(usuario)) {
             MensagemUtil.alerta("Usuario já cadastrado nesse Email");
+        } else if (!usuario.getSenha().equals(senhaConfirmar)) {
+            MensagemUtil.alerta("Senhas não conferem");
         } else {
+            senhaConfirmar = null;
             cadastrarUsuario();
         }
     }
 
     private void cadastrarUsuario() throws IOException {
-        if(userDAO.gravarUsuario(usuario)){
+        if (userDAO.gravarUsuario(usuario)) {
+            if (VerificadorUtil.estaNulo(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_session"))) {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user_session", usuario);
+            }
             PagesUtil.redirectPage("principal");
             MensagemUtil.sucesso("Usuario cadastrado com sucesso");
             usuario = new Usuario();
-        }else{
+        } else {
             MensagemUtil.erro("Erro ao cadastrar Usuario");
         }
     }
 
     private void alterarUsuario() throws IOException {
-        if(userDAO.alterarUsuario(usuario, emailAlteracao)){
+        if (userDAO.alterarUsuario(usuario, emailAlteracao)) {
             PagesUtil.redirectPage("principal");
             MensagemUtil.sucesso("Usuario alterado com sucesso");
             usuario = new Usuario();
-        }else{
+        } else {
             MensagemUtil.erro("Erro ao alterar Usuario");
         }
     }
 
     public void excluirUsuario() throws IOException {
-        if(userDAO.deletarUsuario(usuario.getEmail())){
+        if (userDAO.deletarUsuario(usuario.getEmail())) {
             MensagemUtil.sucesso("Usuario excluido com sucesso");
             usuario = new Usuario();
             PagesUtil.redirectPage("principal");
+        } else {
+            MensagemUtil.erro("Erro ao excluir Usuario!");
+        }
+    }
+
+    public void alterarSenha(){
+        if (!usuario.getSenha().equals(senhaAntiga)) {
+            MensagemUtil.alerta("Senhas atual incorreta!");
+        }else if(!senhaNova.equals(senhaConfirmar)){
+            MensagemUtil.alerta("Senha nova e confirmação não conferem!");
         }else{
-            MensagemUtil.erro("Erro ao excluir Usuario");
+            userDAO.alterarSenha(senhaNova, emailAlteracao);
+            PagesUtil.fecharDialog("dlgAlterarSenha");
+            MensagemUtil.sucesso("Senha alterada com sucesso");
         }
     }
 
@@ -200,5 +229,29 @@ public class UsuarioController implements Serializable {
 
     public void setRenderizarCamposRG(Boolean renderizarCamposRG) {
         this.renderizarCamposRG = renderizarCamposRG;
+    }
+
+    public String getSenhaConfirmar() {
+        return senhaConfirmar;
+    }
+
+    public void setSenhaConfirmar(String senhaConfirmar) {
+        this.senhaConfirmar = senhaConfirmar;
+    }
+
+    public String getSenhaNova() {
+        return senhaNova;
+    }
+
+    public void setSenhaNova(String senhaNova) {
+        this.senhaNova = senhaNova;
+    }
+
+    public String getSenhaAntiga() {
+        return senhaAntiga;
+    }
+
+    public void setSenhaAntiga(String senhaAntiga) {
+        this.senhaAntiga = senhaAntiga;
     }
 }
