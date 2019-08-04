@@ -100,7 +100,7 @@ public class UsuarioController implements Serializable {
 
     public String retornarGenero(String sigla) {
         if (VerificadorUtil.naoEstaNuloOuVazio(sigla)) {
-            return (sigla.equals(ModeloGenero.Masculino.getSigla())) ? ModeloGenero.Masculino.name() : ModeloGenero.Feminino.name();
+            return (sigla.equals(ModeloGenero.MASCULINO.getSigla())) ? ModeloGenero.MASCULINO.name() : ModeloGenero.FEMININO.name();
         } else {
             return null;
         }
@@ -177,10 +177,9 @@ public class UsuarioController implements Serializable {
         return (VerificadorUtil.naoEstaNuloOuVazio(cpf)) ? StringUtil.putMask(cpf, CPF_MASCARA) : null;
     }
 
-    public String cpeMascara(String cpe) {
-        return (VerificadorUtil.naoEstaNuloOuVazio(cpe)) ? StringUtil.putMask(cpe, CPE_MASCARA) : null;
+    public String cepMascara(String cep) {
+        return (VerificadorUtil.naoEstaNuloOuVazio(cep)) ? StringUtil.putMask(cep, CEP_MASCARA) : null;
     }
-
 
     public String telefoneMascara(String telefone) {
         return (VerificadorUtil.naoEstaNuloOuVazio(telefone)) ? StringUtil.putMask(telefone, TELEFONE_MASCARA) : null;

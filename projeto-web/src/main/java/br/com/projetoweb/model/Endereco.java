@@ -1,8 +1,6 @@
 package br.com.projetoweb.model;
 
-import java.io.Serializable;
-
-public class Endereco implements Serializable {
+public class Endereco {
 
 	private String cep;
 	private String logradouro;

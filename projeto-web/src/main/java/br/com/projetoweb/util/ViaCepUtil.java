@@ -1,6 +1,5 @@
 package br.com.projetoweb.util;
 
-
 import br.com.projetoweb.model.Endereco;
 
 public class ViaCepUtil {
@@ -13,7 +12,6 @@ public class ViaCepUtil {
         endereco.setBairro(viaCep.getBairro());
         endereco.setLogradouro(viaCep.getLogradouro());
         endereco.setCidade(viaCep.getLocalidade());
-        
         return endereco;
     }
 }

@@ -1,10 +1,8 @@
 package br.com.projetoweb.model;
 
-import java.io.Serializable;
-
-public class Estado implements Serializable {
-    String nome;
-    String sigla;
+public class Estado {
+    private String nome;
+    private String sigla;
 
     public String getNome() {
         return nome;

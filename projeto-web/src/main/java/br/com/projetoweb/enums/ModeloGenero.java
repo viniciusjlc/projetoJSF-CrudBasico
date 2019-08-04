@@ -1,8 +1,8 @@
 package br.com.projetoweb.enums;
 
 public enum ModeloGenero {
-	Masculino("M"),
-	Feminino("F");
+	MASCULINO("M"),
+	FEMININO("F");
 
 	private String sigla;
 
