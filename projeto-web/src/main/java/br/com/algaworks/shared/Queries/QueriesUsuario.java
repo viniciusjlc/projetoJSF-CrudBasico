@@ -26,6 +26,6 @@ public class QueriesUsuario {
                     "estado=?, bairro=?, numero=?, logradouro=?, complemento=?, data_hora_ultima_modificacao=CURRENT_TIMESTAMP " +
                     "WHERE email like ?";
 
-    public static final String QUERY_EXCLUIR_DELETAR_USUARIO =
-            "DELETE FROM public.usuarios WHERE email like ?";
+    public static final String QUERY_ALTERAR_DELETAR_USUARIO =
+            "UPDATE public.usuarios SET ativo=false WHERE email like ?";
 }

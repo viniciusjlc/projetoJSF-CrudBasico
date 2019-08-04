@@ -9,6 +9,7 @@
         <f:viewAction action="#{sessaoMB.controlarSessao}"/>
         <f:viewAction action="#{usuarioMB.iniciarDadosPaginaPrincipal}"/>
     </f:metadata>
+    <h:outputStylesheet library="css" name="geral.css"/>
     <title>Principal</title>
 </h:head>
 <h:body>
@@ -71,72 +72,45 @@
           closable="true" resizable="false" modal="true">
     <h:form id="formVisualizarUsuario">
         <p:panel id="pnlVisualizarUsuario">
-            <p:panelGrid columns="1">
-                <p:row>
-                    <p:outputLabel value="Nome:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.nome}"/>
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <p:outputLabel value="Data de Nascimento:"/>
-                        <p:outputLabel value="#{usuarioMB.usuario.dataNascimento}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:outputLabel value="Sexo: "
-                                   style="font-weight:bold !important;"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.genero}"/>
-                </p:row>
-                <p:row>
-                    <p:outputLabel value="Email:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.email}">
-                    </p:outputLabel>
-                    <p:outputLabel value="Celular:"/>
-                    <p:outputLabel value="#{usuarioMB.telefoneMascara(usuarioMB.usuario.celular)}"/>
-                </p:row>
-                <p:row>
-                    <p:outputLabel value="CPF:"/>
-                    <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioMB.usuario.cpf)}"/>
-                    <p:outputLabel value="RG:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.rgNumero}"/>
-                </p:row>
-                <p:row rendered="#{usuarioMB.renderizarCamposRG}">
-                    <p:outputLabel value="Data de Emissão RG:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.rgDataEmissao}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </p:outputLabel>
-                    <p:outputLabel value="Estado de Emissão RG:"
-                                   style="font-weight:bold !important;"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.rgEstado}"/>
-                </p:row>
-                <p:row>
-                    <p:outputLabel value="CPE:"/>
-                    <p:outputLabel value="#{usuarioMB.cpeMascara(usuarioMB.usuario.endereco.cep)}"/>
-                </p:row>
-                <p:row>
-                    <p:outputLabel id="out-endereco1">
-                        <p:outputLabel value="Logradouro:"/>
-                        <p:outputLabel value="#{usuarioMB.usuario.endereco.logradouro}"/>
-                        <p:outputLabel value="Bairro:"/>
-                        <p:outputLabel value="#{usuarioMB.usuario.endereco.bairro}"/>
-                    </p:outputLabel>
-                </p:row>
-                <p:row>
-                    <p:outputLabel value="Cidade:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.endereco.cidade}"/>
-                    <p:outputLabel value="Estado:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.endereco.estado}"/>
-                </p:row>
-                <p:row>
-                    <p:outputLabel value="Endereço Numero:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.endereco.numero}"/>
-                    <p:outputLabel value="Endereço Complemento:"/>
-                    <p:outputLabel value="#{usuarioMB.usuario.endereco.complemento}"/>
-                </p:row>
+            <p:panelGrid columns="4">
+                <p:outputLabel value="Nome:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.nome}"/>
+                <p:outputLabel value="Data de Nascimento:"/>
+                <p:outputLabel value="#{usuarioMB.usuario.dataNascimento}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:outputLabel>
+                <p:outputLabel value="Sexo:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.retornarGenero(usuarioMB.usuario.genero)}"/>
+                <p:outputLabel value="Email:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.email}">
+                </p:outputLabel>
+                <p:outputLabel value="Celular:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.telefoneMascara(usuarioMB.usuario.celular)}"/>
+                <p:outputLabel value="CPF:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioMB.usuario.cpf)}"/>
+                <p:outputLabel value="RG:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.rgNumero}"/>
+                <p:outputLabel value="Data de Emissão RG:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.rgDataEmissao}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:outputLabel>
+                <p:outputLabel value="Estado de Emissão RG:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.rgEstado}"/>
+                <p:outputLabel value="CPE:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.cpeMascara(usuarioMB.usuario.endereco.cep)}"/>
+                    <p:outputLabel value="Logradouro:" styleClass="campos-lab"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.endereco.logradouro}"/>
+                    <p:outputLabel value="Bairro:" styleClass="campos-lab"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.endereco.bairro}"/>
+                <p:outputLabel value="Cidade:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.endereco.cidade}"/>
+                <p:outputLabel value="Estado:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.endereco.estado}"/>
+                <p:outputLabel value="Endereço Numero:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.endereco.numero}"/>
+                <p:outputLabel value="Endereço Complemento:" styleClass="campos-lab"/>
+                <p:outputLabel value="#{usuarioMB.usuario.endereco.complemento}"/>
             </p:panelGrid>
-            <p:row>
-                <p:commandButton oncomplete="PF('dlgVisualizarUsuario').hide();" value="Fechar"/>
-            </p:row>
         </p:panel>
     </h:form>
 </p:dialog>

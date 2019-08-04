@@ -87,6 +87,14 @@ public class UsuarioController implements Serializable {
         }
     }
 
+    public String retornarGenero(String sigla){
+        if(VerificadorUtil.naoEstaNuloOuVazio(sigla)){
+            return (sigla.equals(ModeloGenero.Masculino.getSigla())) ? ModeloGenero.Masculino.name() : ModeloGenero.Feminino.name();
+        }else{
+            return null;
+        }
+    }
+
     private void validarUsuarioCadastrado() throws IOException {
         if (userDAO.verificarEmail(usuario)) {
             MensagemUtil.alerta("Usuario já cadastrado nesse Email");

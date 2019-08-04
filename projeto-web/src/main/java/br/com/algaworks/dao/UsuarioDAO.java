@@ -151,7 +151,7 @@ public class UsuarioDAO {
         conexao = ConnectionFactory.getConnection();
         PreparedStatement ps;
         try {
-            ps = conexao.prepareStatement(QUERY_EXCLUIR_DELETAR_USUARIO);
+            ps = conexao.prepareStatement(QUERY_ALTERAR_DELETAR_USUARIO);
             ps.setString(1, email);
             ps.executeUpdate();
             salvou = true;

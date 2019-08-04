@@ -9,142 +9,146 @@
     <f:metadata>
         <f:viewAction action="#{usuarioMB.definirCadastrarAtualizar()}"/>
     </f:metadata>
+    <h:outputStylesheet library="css" name="geral.css"/>
     <title>#{usuarioMB.condicaoTelaCadastarAtualizar}</title>
 </h:head>
 <h:body>
-    <h:form id="formDados">
-        <p:growl id="msg" showDetail="true"/>
-        <p:panelGrid columns="1">
-            <p:row>
-                <p:outputLabel value="#{usuarioMB.condicaoTelaCadastarAtualizar} Usuario"/>
-            </p:row>
-            <p:row>
-                <p:outputLabel value="Nome:"/>
-                <p:inputText value="#{usuarioMB.usuario.nome}" maxlength="120"
-                required="true" requiredMessage="Nome é obrigatorio"/>
-            </p:row>
-            <p:row>
-                <p:outputLabel value="Data de Nascimento:"/>
-                <p:calendar locale="pt" validator="DataMenorQueAtualValidator"
-                            maxdate="#{usuarioMB.retornarDataMaxima()}"
-                            value="#{usuarioMB.usuario.dataNascimento}"
-                            pattern="dd/MM/yyyy" mask="true">
-                </p:calendar>
-                <p:outputLabel value="Sexo: "
-                               style="font-weight:bold !important;">
-                </p:outputLabel>
-                <p:selectOneMenu
-                        filterMatchMode="startsWith" filter="true"
-                        value="#{usuarioMB.usuario.genero}">
-                    <f:selectItem itemLabel="Selecione" itemValue=""/>
-                    <f:selectItems var="ModeloSexo"
-                                   value="#{usuarioMB.listaComModelosDeGeneros}"
-                                   itemLabel="#{ModeloSexo.name()}"
-                                   itemValue="#{ModeloSexo.sigla}"/>
-                </p:selectOneMenu>
-            </p:row>
-            <p:row>
-                <p:outputLabel value="Email:"/>
-                <p:inputText validator="EmailValidator"
-                             required="true" requiredMessage="Email é obrigatorio"
-                             value="#{usuarioMB.usuario.email}"
-                             maxlength="50">
-                    <p:ajax update="msg"/>
-                </p:inputText>
-                <p:outputLabel value="Celular:"/>
-                <p:inputMask
-                        mask="99999-9999" maxlength="10"
-                        value="#{usuarioMB.usuario.celular}">
-                </p:inputMask>
-            </p:row>
-            <p:row>
-                <p:outputLabel value="CPF:"/>
-                <p:inputMask
-                        validator="CpfValidator"
-                        mask="999.999.999-99" maxlength="11"
-                        value="#{usuarioMB.usuario.cpf}">
-                    <p:ajax event="blur" update=":formDados:msg"/>
-                </p:inputMask>
-                <p:outputLabel value="RG:"/>
-                <p:inputText
-                        value="#{usuarioMB.usuario.rgNumero}"
-                        maxlength="9">
-                    <p:ajax listener="#{usuarioMB.checarCamposRG()}"
-                            update=":formDados:out-rg"/>
-                </p:inputText>
-            </p:row>
-            <p:outputLabel id="out-rg">
-                <p:row rendered="#{usuarioMB.renderizarCamposRG}">
-                    <p:outputLabel value="Data de Emissão RG:"/>
+    <div style="align-content: center">
+        <h:form id="formDados">
+            <p:growl id="msg" showDetail="true"/>
+            <p:panelGrid columns="1">
+                <p:row>
+                    <p:outputLabel value="#{usuarioMB.condicaoTelaCadastarAtualizar} Usuario" styleClass="campos-lab"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="Nome:" styleClass="campos-lab">
+                        <span style="color: red;">* </span>
+                    </p:outputLabel>
+                    <p:inputText value="#{usuarioMB.usuario.nome}" maxlength="120"
+                                 required="true" requiredMessage="Nome é obrigatorio"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="Data de Nascimento:" styleClass="campos-lab"/>
                     <p:calendar locale="pt" validator="DataMenorQueAtualValidator"
                                 maxdate="#{usuarioMB.retornarDataMaxima()}"
-                                value="#{usuarioMB.usuario.rgDataEmissao}"
+                                value="#{usuarioMB.usuario.dataNascimento}"
                                 pattern="dd/MM/yyyy" mask="true">
                     </p:calendar>
-                    <p:outputLabel value="Estado de Emissão RG:"
-                                   style="font-weight:bold !important;">
+                    <p:outputLabel value="Sexo:" styleClass="campos-lab">
                     </p:outputLabel>
                     <p:selectOneMenu
                             filterMatchMode="startsWith" filter="true"
-                            value="#{usuarioMB.usuario.rgEstado}">
+                            value="#{usuarioMB.usuario.genero}">
                         <f:selectItem itemLabel="Selecione" itemValue=""/>
-                        <f:selectItems var="Estado"
-                                       value="#{usuarioMB.listaComEstados}"
-                                       itemLabel="#{Estado.nome}"
-                                       itemValue="#{Estado.sigla}"/>
+                        <f:selectItems var="ModeloSexo"
+                                       value="#{usuarioMB.listaComModelosDeGeneros}"
+                                       itemLabel="#{ModeloSexo.name()}"
+                                       itemValue="#{ModeloSexo.sigla}"/>
                     </p:selectOneMenu>
                 </p:row>
-            </p:outputLabel>
-            <p:row>
-                <p:outputLabel value="CPE:"/>
-                <p:inputMask
-                        mask="99999-999" maxlength="9"
-                        value="#{usuarioMB.usuario.endereco.cep}">
-                    <p:ajax listener="#{usuarioMB.buscarCep()}"
-                            update=":formDados:out-endereco1, :formDados:out-endereco2"/>
-                </p:inputMask>
-            </p:row>
-            <p:row>
-                <p:outputLabel id="out-endereco1">
-                    <p:outputLabel value="Logradouro:"/>
+                <p:row>
+                    <p:outputLabel value="Email:" styleClass="campos-lab">
+                        <span style="color: red;">* </span>
+                    </p:outputLabel>
+                    <p:inputText validator="EmailValidator"
+                                 required="true" requiredMessage="Email é obrigatorio"
+                                 value="#{usuarioMB.usuario.email}"
+                                 maxlength="50">
+                        <p:ajax update="msg"/>
+                    </p:inputText>
+                    <p:outputLabel value="Celular:" styleClass="campos-lab"/>
+                    <p:inputMask
+                            mask="99999-9999" maxlength="10"
+                            value="#{usuarioMB.usuario.celular}">
+                    </p:inputMask>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="CPF:" styleClass="campos-lab"/>
+                    <p:inputMask
+                            validator="CpfValidator"
+                            mask="999.999.999-99" maxlength="11"
+                            value="#{usuarioMB.usuario.cpf}">
+                        <p:ajax event="blur" update=":formDados:msg"/>
+                    </p:inputMask>
+                    <p:outputLabel value="RG:" styleClass="campos-lab"/>
                     <p:inputText
-                            value="#{usuarioMB.usuario.endereco.logradouro}"
-                            maxlength="40"/>
-                    <p:outputLabel value="Bairro:"/>
-                    <p:inputText
-                            value="#{usuarioMB.usuario.endereco.bairro}"
-                            maxlength="40"/>
+                            value="#{usuarioMB.usuario.rgNumero}"
+                            maxlength="9">
+                        <p:ajax listener="#{usuarioMB.checarCamposRG()}"
+                                update=":formDados:out-rg"/>
+                    </p:inputText>
+                </p:row>
+                <p:outputLabel id="out-rg">
+                    <p:row rendered="#{usuarioMB.renderizarCamposRG}">
+                        <p:outputLabel value="Data de Emissão RG:" styleClass="campos-lab"/>
+                        <p:calendar locale="pt" validator="DataMenorQueAtualValidator"
+                                    maxdate="#{usuarioMB.retornarDataMaxima()}"
+                                    value="#{usuarioMB.usuario.rgDataEmissao}"
+                                    pattern="dd/MM/yyyy" mask="true">
+                        </p:calendar>
+                        <p:outputLabel value="Estado de Emissão RG:" styleClass="campos-lab"/>
+                        <p:selectOneMenu
+                                filterMatchMode="startsWith" filter="true"
+                                value="#{usuarioMB.usuario.rgEstado}">
+                            <f:selectItem itemLabel="Selecione" itemValue=""/>
+                            <f:selectItems var="Estado"
+                                           value="#{usuarioMB.listaComEstados}"
+                                           itemLabel="#{Estado.nome}"
+                                           itemValue="#{Estado.sigla}"/>
+                        </p:selectOneMenu>
+                    </p:row>
                 </p:outputLabel>
-            </p:row>
-            <p:row>
-                <p:outputLabel id="out-endereco2">
-                    <p:outputLabel value="Cidade:"/>
+                <p:row>
+                    <p:outputLabel value="CPE:" styleClass="campos-lab"/>
+                    <p:inputMask
+                            mask="99999-999" maxlength="9"
+                            value="#{usuarioMB.usuario.endereco.cep}">
+                        <p:ajax listener="#{usuarioMB.buscarCep()}"
+                                update=":formDados:out-endereco1, :formDados:out-endereco2"/>
+                    </p:inputMask>
+                </p:row>
+                <p:row>
+                    <p:outputLabel id="out-endereco1">
+                        <p:outputLabel value="Logradouro:" styleClass="campos-lab"/>
+                        <p:inputText
+                                value="#{usuarioMB.usuario.endereco.logradouro}"
+                                maxlength="40"/>
+                        <p:outputLabel value="Bairro:" styleClass="campos-lab"/>
+                        <p:inputText
+                                value="#{usuarioMB.usuario.endereco.bairro}"
+                                maxlength="40"/>
+                    </p:outputLabel>
+                </p:row>
+                <p:row>
+                    <p:outputLabel id="out-endereco2">
+                        <p:outputLabel value="Cidade:" styleClass="campos-lab"/>
+                        <p:inputText
+                                value="#{usuarioMB.usuario.endereco.cidade}"
+                                maxlength="30"/>
+                        <p:outputLabel value="Estado:" styleClass="campos-lab"/>
+                        <p:selectOneMenu
+                                filterMatchMode="startsWith" filter="true"
+                                value="#{usuarioMB.usuario.endereco.estado}">
+                            <f:selectItem itemLabel="Selecione" itemValue=""/>
+                            <f:selectItems var="Estado"
+                                           value="#{usuarioMB.listaComEstados}"
+                                           itemLabel="#{Estado.nome}"
+                                           itemValue="#{Estado.sigla}"/>
+                        </p:selectOneMenu>
+                    </p:outputLabel>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="Endereço Numero:" styleClass="campos-lab"/>
                     <p:inputText
-                            value="#{usuarioMB.usuario.endereco.cidade}"
-                            maxlength="30"/>
-                    <p:outputLabel value="Estado:"/>
-                    <p:selectOneMenu
-                            filterMatchMode="startsWith" filter="true"
-                            value="#{usuarioMB.usuario.endereco.estado}">
-                        <f:selectItem itemLabel="Selecione" itemValue=""/>
-                        <f:selectItems var="Estado"
-                                       value="#{usuarioMB.listaComEstados}"
-                                       itemLabel="#{Estado.nome}"
-                                       itemValue="#{Estado.sigla}"/>
-                    </p:selectOneMenu>
-                </p:outputLabel>
-            </p:row>
-            <p:row>
-                <p:outputLabel value="Endereço Numero:"/>
-                <p:inputText
-                        value="#{usuarioMB.usuario.endereco.numero}"/>
-                <p:outputLabel value="Endereço Complemento:"/>
-                <p:inputText maxlength="60"
-                             value="#{usuarioMB.usuario.endereco.complemento}"/>
-            </p:row>
-        </p:panelGrid>
-        <p:commandButton value="#{usuarioMB.condicaoTelaCadastarAtualizar}" update=":formDados:msg"
-                         action="#{usuarioMB.validarCondicaoGravacao()}"/>
-    </h:form>
+                            value="#{usuarioMB.usuario.endereco.numero}"/>
+                    <p:outputLabel value="Endereço Complemento:" styleClass="campos-lab"/>
+                    <p:inputText maxlength="60"
+                                 value="#{usuarioMB.usuario.endereco.complemento}"/>
+                </p:row>
+            </p:panelGrid>
+            <p:commandButton value="#{usuarioMB.condicaoTelaCadastarAtualizar}" update=":formDados:msg"
+                             action="#{usuarioMB.validarCondicaoGravacao()}" styleClass="campos-lab"/>
+        </h:form>
+    </div>
 </h:body>
 </html>
