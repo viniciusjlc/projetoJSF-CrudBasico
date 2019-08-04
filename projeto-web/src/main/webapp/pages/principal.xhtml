@@ -7,7 +7,7 @@
     <meta charset="UTF-8"/>
     <f:metadata>
         <f:viewAction action="#{sessaoMB.controlarSessao}"/>
-        <f:viewAction action="#{usuarioMB.iniciarListaUsuarios}"/>
+        <f:viewAction action="#{usuarioMB.iniciarDadosPaginaPrincipal}"/>
     </f:metadata>
     <title>Principal</title>
 </h:head>
@@ -30,11 +30,16 @@
             <p:column headerText="CPF">
                 <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioTab.cpf)}"/>
             </p:column>
-            <p:column headerText="Ações">
+            <p:column headerText="Ações" style="width: 30%">
                 <p:commandButton value="Alterar" action="#{usuarioMB.redirecionarAtualizar}" immediate="true">
                     <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
                 </p:commandButton>
-                <p:commandButton value="Excluir" onclick="PF('dlgExcluirUsuario').show();" immediate="true">
+                <p:commandButton value="Excluir" onclick="PF('dlgExcluirUsuario').show();" immediate="true"
+                                 update=":formExcluirUsuario">
+                    <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
+                </p:commandButton>
+                <p:commandButton value="Visualizar" onclick="PF('dlgVisualizarUsuario').show();" immediate="true"
+                                 update=":formVisualizarUsuario">
                     <f:setPropertyActionListener value="#{usuarioTab}" target="#{usuarioMB.usuario}"/>
                 </p:commandButton>
             </p:column>
@@ -43,7 +48,7 @@
 </h:body>
 
 <p:dialog dynamic="true" widgetVar="dlgExcluirUsuario"
-          header="Teste" width="auto" height="auto"
+          header="Deletar Usuario" width="auto" height="auto"
           closable="true" resizable="false" modal="true">
     <h:form id="formExcluirUsuario">
         <p:panel id="pnlExcluirUsuario">
@@ -57,6 +62,81 @@
                     <p:commandButton oncomplete="PF('dlgExcluirUsuario').hide();" value="Não"/>
                 </p:row>
             </p:panelGrid>
+        </p:panel>
+    </h:form>
+</p:dialog>
+
+<p:dialog dynamic="true" widgetVar="dlgVisualizarUsuario"
+          header="Visualizar Usuario" width="auto" height="auto"
+          closable="true" resizable="false" modal="true">
+    <h:form id="formVisualizarUsuario">
+        <p:panel id="pnlVisualizarUsuario">
+            <p:panelGrid columns="1">
+                <p:row>
+                    <p:outputLabel value="Nome:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.nome}"/>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Data de Nascimento:"/>
+                        <p:outputLabel value="#{usuarioMB.usuario.dataNascimento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:outputLabel value="Sexo: "
+                                   style="font-weight:bold !important;"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.genero}"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="Email:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.email}">
+                    </p:outputLabel>
+                    <p:outputLabel value="Celular:"/>
+                    <p:outputLabel value="#{usuarioMB.telefoneMascara(usuarioMB.usuario.celular)}"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="CPF:"/>
+                    <p:outputLabel value="#{usuarioMB.cpfMascara(usuarioMB.usuario.cpf)}"/>
+                    <p:outputLabel value="RG:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.rgNumero}"/>
+                </p:row>
+                <p:row rendered="#{usuarioMB.renderizarCamposRG}">
+                    <p:outputLabel value="Data de Emissão RG:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.rgDataEmissao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:outputLabel>
+                    <p:outputLabel value="Estado de Emissão RG:"
+                                   style="font-weight:bold !important;"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.rgEstado}"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="CPE:"/>
+                    <p:outputLabel value="#{usuarioMB.cpeMascara(usuarioMB.usuario.endereco.cep)}"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel id="out-endereco1">
+                        <p:outputLabel value="Logradouro:"/>
+                        <p:outputLabel value="#{usuarioMB.usuario.endereco.logradouro}"/>
+                        <p:outputLabel value="Bairro:"/>
+                        <p:outputLabel value="#{usuarioMB.usuario.endereco.bairro}"/>
+                    </p:outputLabel>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="Cidade:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.endereco.cidade}"/>
+                    <p:outputLabel value="Estado:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.endereco.estado}"/>
+                </p:row>
+                <p:row>
+                    <p:outputLabel value="Endereço Numero:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.endereco.numero}"/>
+                    <p:outputLabel value="Endereço Complemento:"/>
+                    <p:outputLabel value="#{usuarioMB.usuario.endereco.complemento}"/>
+                </p:row>
+            </p:panelGrid>
+            <p:row>
+                <p:commandButton oncomplete="PF('dlgVisualizarUsuario').hide();" value="Fechar"/>
+            </p:row>
         </p:panel>
     </h:form>
 </p:dialog>

@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.util.regex.Pattern;
 
 public class StringUtil extends org.apache.commons.lang3.StringUtils{
+
     public static String putMask(String valorSemMascara, String mask) {
         StringBuilder valorComMascara = new StringBuilder();
         int j = 0;

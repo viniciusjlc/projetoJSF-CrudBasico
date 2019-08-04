@@ -66,7 +66,7 @@ public class ViaCEP extends ViaCEPBase {
                     obj.getString("logradouro"),
                     obj.getString("complemento"),
                     obj.getString("bairro"),
-                    StringUtil.retirarAcento(obj.getString("localidade")),
+                    obj.getString("localidade"),
                     obj.getString("uf"),
                     obj.getString("ibge"),
                     obj.getString("gia"));

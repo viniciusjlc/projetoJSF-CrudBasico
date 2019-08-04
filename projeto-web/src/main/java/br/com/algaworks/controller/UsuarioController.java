@@ -35,8 +35,9 @@ public class UsuarioController implements Serializable {
         usuario = new Usuario();
     }
 
-    public void iniciarListaUsuarios() {
+    public void iniciarDadosPaginaPrincipal() {
         listaComUsuarios = userDAO.retornarListaComUsuarios();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user_update");
     }
 
     public void redirecionarAtualizar() throws IOException {
@@ -46,10 +47,6 @@ public class UsuarioController implements Serializable {
 
     public void redirecionarCadastrar() throws IOException {
         PagesUtil.redirectPage("cadastrarusuario");
-    }
-
-    public void teste(){
-        System.out.println("TESTE: "+this.usuario.getEmail());
     }
 
     public void definirCadastrarAtualizar(){
@@ -122,7 +119,7 @@ public class UsuarioController implements Serializable {
         if(userDAO.deletarUsuario(usuario.getEmail())){
             MensagemUtil.sucesso("Usuario excluido com sucesso");
             usuario = new Usuario();
-            PagesUtil.atualizarComponente(":formPrincipal");
+            PagesUtil.redirectPage("principal");
         }else{
             MensagemUtil.erro("Erro ao excluir Usuario");
         }
@@ -139,6 +136,11 @@ public class UsuarioController implements Serializable {
     public String cpfMascara(String cpf) {
         return (VerificadorUtil.naoEstaNuloOuVazio(cpf)) ? StringUtil.putMask(cpf, CPF_MASCARA) : null;
     }
+
+    public String cpeMascara(String cpe) {
+        return (VerificadorUtil.naoEstaNuloOuVazio(cpe)) ? StringUtil.putMask(cpe, CPE_MASCARA) : null;
+    }
+
 
     public String telefoneMascara(String telefone) {
         return (VerificadorUtil.naoEstaNuloOuVazio(telefone)) ? StringUtil.putMask(telefone, TELEFONE_MASCARA) : null;
